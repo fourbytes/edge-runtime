@@ -1,6 +1,7 @@
 use deno_core::error::{custom_error, AnyError};
 use deno_core::url::Url;
-use deno_fs::OpenOptions;
+use deno_fs::{FsPermissions, OpenOptions};
+use sb_node::NodePermissions;
 use std::path::Path;
 
 pub struct Permissions {
@@ -167,6 +168,15 @@ impl sb_node::NodePermissions for Permissions {
     }
 
     fn check_sys(&self, _kind: &str, _api_name: &str) -> Result<(), AnyError> {
+        Ok(())
+    }
+}
+
+impl deno_ffi::FfiPermissions for Permissions {
+    fn check_partial(&mut self, path: Option<&Path>) -> Result<(), AnyError> {
+        if let Some(path) = path {
+            self.check_read(path, "ffi::partial")?;
+        }
         Ok(())
     }
 }

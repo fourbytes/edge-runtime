@@ -254,6 +254,7 @@ impl DenoRuntime {
             deno_http::deno_http::init_ops::<DefaultHttpPropertyExtractor>(),
             deno_io::deno_io::init_ops(stdio),
             deno_fs::deno_fs::init_ops::<Permissions>(fs.clone()),
+            deno_ffi::deno_ffi::init_ops::<Permissions>(),
             sb_env_op::init_ops(),
             sb_os::sb_os::init_ops(),
             sb_user_workers::init_ops(),
